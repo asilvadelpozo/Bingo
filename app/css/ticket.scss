@@ -23,6 +23,18 @@ body {
   text-align: center;
 }
 
+#loadPanel {
+  margin: $main-size 0px;
+  width: 40 * $main-size;
+  //TODO adapt this to see if it fits to the content
+  height: 40 * $main-size;
+  margin-left: auto;
+  margin-right: auto;
+  background: url("../img/Tipp24_logo.png") no-repeat center center;
+  background-color: $board-cell-color;
+  text-align: center;
+}
+
 #content {
   margin: $main-size 0px;
   display: table;
@@ -69,7 +81,12 @@ body {
   @extend %ticketSection;
   padding-top: $main-size;
   padding-bottom: 0px;
-  height: 50%;
+}
+
+#numbersCanvas {
+  background-color: $ticket-background-color;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #numbers {

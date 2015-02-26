@@ -1,0 +1,30 @@
+$button-color1:#b0b500;
+$button-color2:#4b7100;
+$ticket-background-color: #fad37f;
+
+
+$main-size: 1em;
+
+body {
+  margin: $main-size 0px;
+  display: table;
+  width: 40 * $main-size;
+  //TODO adapt this to see if it fits to the content
+  height: 40 * $main-size;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#demoCanvas {
+  background-color: #fad37f;
+}
+
+
+.bingoButton {
+  width: 8 * $main-size;
+  height: 2 * $main-size;
+  border-radius: $main-size;
+  color: white;
+  background: linear-gradient($button-color1, $button-color2);
+  border: 0px;
+}

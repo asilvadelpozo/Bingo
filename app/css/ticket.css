@@ -6,6 +6,16 @@ body {
   color: #990100;
   text-align: center; }
 
+#loadPanel {
+  margin: 1em 0px;
+  width: 40em;
+  height: 40em;
+  margin-left: auto;
+  margin-right: auto;
+  background: url("../img/Tipp24_logo.png") no-repeat center center;
+  background-color: #ff9b00;
+  text-align: center; }
+
 #content {
   margin: 1em 0px;
   display: table;
@@ -42,8 +52,12 @@ body {
 
 #info {
   padding-top: 1em;
-  padding-bottom: 0px;
-  height: 50%; }
+  padding-bottom: 0px; }
+
+#numbersCanvas {
+  background-color: #fad37f;
+  margin-left: auto;
+  margin-right: auto; }
 
 #numbers {
   display: table-cell;
@@ -209,3 +223,5 @@ body {
   font-weight: bold;
   font-size: 3em;
   margin: 25px; }
+
+/*# sourceMappingURL=ticket.css.map */

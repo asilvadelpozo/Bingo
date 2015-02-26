@@ -11,6 +11,8 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
         $scope.numbers = new Numbers(scenario.revealedNumbers.length);
     });
 
+    $scope.numbersCanvas = new NumbersCanvas();
+
     $scope.prizes = Prizes.query();
 
     $scope.nextNumber = -1;
@@ -20,10 +22,45 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
 
     $scope.numberIndex = 0;
 
-    $scope.speed = 1000;
+    $scope.speed = 3300;
 
     $scope.amountPrizeWon = 0;
     $scope.winningClassesPrizeWon = new Array();
+
+    $scope.ticketVisible = false;
+
+    $scope.isTicketVisible = function() {
+        return $scope.ticketVisible;
+    };
+
+    $scope.preloadAssets = function() {
+        var preload = new createjs.LoadQueue();
+
+        createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]); // need this so it doesn't default to Web Audio
+        preload.installPlugin(createjs.Sound);
+
+        preload.on("fileload", $scope.handleFileComplete);
+        preload.on("complete", $scope.handleComplete);
+
+        preload.loadManifest({src: "./assets/static/manifest.json", callback: "loadMediaGrid", type: "manifest"}, true, "./assets/");
+    };
+
+    $scope.handleComplete = function(event) {
+        createjs.Sound.play("youWin");
+        $scope.ticketVisible = true;
+        $scope.$apply();
+    };
+
+    $scope.handleFileComplete = function(event) {
+
+        if(event.item.id === 'images/numbers.png') {
+            $scope.numbersCanvas.initCanvas(event.result);
+        }
+//        if(event.item.type === 'sound') {
+//            console.log("/assets/" + event.item.id);
+//            createjs.Sound.registerSound("../../assets/" + event.item.id, event.item.id);
+//        }
+    };
 
     $scope.isNextNumberAvailable = function() {
         return $scope.nextNumber != -1;
@@ -39,6 +76,7 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
 
     var stop;
     $scope.play = function() {
+
         $scope.reset();
         stop = $interval(function() {
             if($scope.numberIndex < $scope.scenario.revealedNumbers.length) {
@@ -53,7 +91,7 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
 
     $scope.revealNextNumber = function() {
         $scope.nextNumber = $scope.scenario.revealedNumbers[$scope.numberIndex];
-        $scope.numbers.showNumber($scope.nextNumber);
+        $scope.numbersCanvas.handleNumber($scope.nextNumber);
         $scope.numbers.removeRemainingBall($scope.numberIndex);
         $scope.ticketModel.checkNumberInBoards($scope.nextNumber);
         $scope.numberIndex++;
@@ -83,7 +121,7 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
     });
 
     $scope.reset = function() {
-        $scope.numbers.reset();
+        $scope.numbersCanvas.cleanCanvas();
         $scope.ticketModel.resetBoards();
         $scope.numberIndex = 0;
         $scope.playButtonEnabled = false;

@@ -1,0 +1,12 @@
+loadMediaGrid({
+    "path": "./assets/",
+    "manifest": [
+        {"id":"fallingBall", "src":"audio/falling_ball.mp3"},
+        {"id":"loose", "src":"audio/loose.mp3"},
+        {"id":"setBall", "src":"audio/set_ball.mp3"},
+        {"id":"win", "src":"audio/win.mp3"},
+        {"id":"youLose", "src":"audio/You_Lose.mp3"},
+        {"id":"youWin", "src":"audio/You_Win.mp3"},
+        {"id":"images/numbers.png", "src":"images/numbers.png"},
+    ]
+});
