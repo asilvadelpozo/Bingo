@@ -61,9 +61,9 @@ function NumbersCanvas() {
         createjs.Sound.play("setBall", {delay: 2980, volume: 0.5});
 
         createjs.Tween.get(ball, {loop: false})
-            .to({alpha: 1, y: ball.y + 65}, 200, createjs.Ease.getPowInOut(1))
-            .to({y: ball.y + 45}, 250, createjs.Ease.getPowInOut(1))
-            .to({y: ball.y + 65}, 250, createjs.Ease.getPowInOut(1))
+            .to({alpha: 1, y: ball.y + 75}, 200, createjs.Ease.getPowInOut(1))
+            .to({y: ball.y + 60}, 250, createjs.Ease.getPowInOut(1))
+            .to({y: ball.y + 75}, 250, createjs.Ease.getPowInOut(1))
             .wait(100)
             .to({y: ball.y + 35, x: ball.x - 25, scaleX: 4, scaleY: 4}, 300, createjs.Ease.circIn())
             .to({y: ball.y - 90, x: ball.x - 60, scaleX: 8, scaleY: 8}, 150, createjs.Ease.circIn())
@@ -204,7 +204,7 @@ function NumbersCanvas() {
         // this has to be define first cause these variables represent the refrence Point for all following calculation and drawing of the bowl and
         // its balls
         this.bowlCenterXCoordinate = 340 + ((this.canvas.width - 340) / 2);
-        this.bowlCenterYCoordinate = 100;
+        this.bowlCenterYCoordinate = 110;
 
         for (var i = 0; i < this.numberOfBalls; i++) {
             var startingDegreePosition = this.calculateStartingPointOfBall(i);
@@ -227,11 +227,17 @@ function NumbersCanvas() {
 
         var bowl = new createjs.Shape();
         bowl.graphics.beginFill("white").drawCircle(0, 0, this.bowlRadius);
-        bowl.shadow = new createjs.Shadow("white", 0, 2, 5);
         bowl.alpha = 0.3;
         bowl.x = this.bowlCenterXCoordinate;
         bowl.y = this.bowlCenterYCoordinate;
         bowlContainer.addChild(bowl);
+
+        var bowlLine = new createjs.Shape();
+        bowlLine.graphics.setStrokeStyle(3,"round").beginStroke("white").drawCircle(0, 0, this.bowlRadius);
+        bowlLine.shadow = new createjs.Shadow("white", -2, 2, 10);
+        bowlLine.x = this.bowlCenterXCoordinate;
+        bowlLine.y = this.bowlCenterYCoordinate;
+        bowlContainer.addChild(bowlLine);
 
         var bowlMirror = new createjs.Shape();
         var bowlMirrorWidth = this.bowlRadius * 1.5;
