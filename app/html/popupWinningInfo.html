@@ -1,5 +1,13 @@
 <div id="winningInfo">
-    <p class="popupTitle">Congratulations!</p>
-    <p>You have won!</p>
-    <p class="prizePopupAmount">{{amountPrizeWon}} €</p>
+    <div ng-show="hasCustomerWon()">
+        <p class="popupTitle">You win!</p>
+        <p>Congratulations!</p>
+        <p class="prizePopupAmount">{{amountPrizeWon}} €</p>
+    </div>
+    <div ng-show="!hasCustomerWon()">
+        <p class="popupTitle">You lose!</p>
+        <p>Damn it!</p>
+        <p class="prizePopupAmount">Try again!</p>
+    </div>
 </div>
+

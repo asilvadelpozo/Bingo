@@ -27,6 +27,8 @@ function NumbersCanvas() {
         this.stage.addChild(container);
 
         bitmap = new createjs.Bitmap(this.canvasImage);
+        bitmap.x = 2;
+        bitmap.y = 2;
         container.addChild(bitmap);
 
         this.stage.addChild(container);
@@ -55,14 +57,21 @@ function NumbersCanvas() {
     NumbersCanvas.prototype.moveBall = function(ball, number) {
         var finalPosition = this.calculatePositionForBall(number);
 
+        createjs.Sound.play("fallingBall");
+        createjs.Sound.play("setBall", {delay: 2980, volume: 0.5});
+
         createjs.Tween.get(ball, {loop: false})
-            .to({alpha: 1, y: ball.y + 10}, 200, createjs.Ease.getPowInOut(1))
-            .to({y: ball.y + 75, x: ball.x - 10, scaleX: 2, scaleY: 2}, 500, createjs.Ease.circIn())
-            .to({y: ball.y - 50, x: ball.x - 60, scaleX: 8, scaleY: 8}, 300, createjs.Ease.circIn())
-            .wait(1500)
-            .to({scaleX: 4, scaleY: 4, x: ball.x + 50, y: ball.y}, 300, createjs.Ease.circIn())
-            .wait(300)
-            .to({guide:{ path: this.calculateCurvePoints({x: ball.x + 50, y: ball.y}, this.calculateControlPoints({x: ball.x  + 50, y: ball.y}, {x: finalPosition.x, y: finalPosition.y}, finalPosition.row).originControlPoint, this.calculateControlPoints({x: ball.x  + 50, y: ball.y}, {x: finalPosition.x, y: finalPosition.y}, finalPosition.row).targetControlPoint, {x: finalPosition.x, y: finalPosition.y}) }, scaleX: 1.6, scaleY: 1.6}, 400);
+            .to({alpha: 1, y: ball.y + 65}, 200, createjs.Ease.getPowInOut(1))
+            .to({y: ball.y + 45}, 250, createjs.Ease.getPowInOut(1))
+            .to({y: ball.y + 65}, 250, createjs.Ease.getPowInOut(1))
+            .wait(100)
+            .to({y: ball.y + 35, x: ball.x - 25, scaleX: 4, scaleY: 4}, 300, createjs.Ease.circIn())
+            .to({y: ball.y - 90, x: ball.x - 60, scaleX: 8, scaleY: 8}, 150, createjs.Ease.circIn())
+            .wait(1000)
+            .to({scaleX: 4, scaleY: 4, x: ball.x + 50, y: ball.y - 50}, 200, createjs.Ease.circIn())
+            .wait(200)
+            .to({guide:{ path: this.calculateCurvePoints({x: ball.x + 50, y: ball.y - 50}, this.calculateControlPoints({x: ball.x  + 50, y: ball.y - 50}, {x: finalPosition.x, y: finalPosition.y}, finalPosition.row).originControlPoint, this.calculateControlPoints({x: ball.x  + 50, y: ball.y - 50}, {x: finalPosition.x, y: finalPosition.y}, finalPosition.row).targetControlPoint, {x: finalPosition.x, y: finalPosition.y}) }, scaleX: 1.6, scaleY: 1.6}, 400);
+
     };
 
     NumbersCanvas.prototype.bezier = function(t, p0, p1, p2, p3){
@@ -90,8 +99,8 @@ function NumbersCanvas() {
         }
 
         return {
-            x: column * 34,
-            y: row * 34,
+            x: column * 34 + 3,
+            y: row * 34 + 2,
             row: row
         };
     };
@@ -153,7 +162,7 @@ function NumbersCanvas() {
             ball.y = this.calculateYCoordinateOnCircle(position);
         } else {
             ball.x = 340 + ((this.canvas.width - 340) / 2) - (2 * this.ballRadius);
-            ball.y = 100;
+            ball.y = 150;
             ball.alpha = 0;
         }
 
@@ -199,7 +208,7 @@ function NumbersCanvas() {
 
         for (var i = 0; i < this.numberOfBalls; i++) {
             var startingDegreePosition = this.calculateStartingPointOfBall(i);
-            var ball = this.createBall(i + 1, startingDegreePosition);
+            var ball = this.createBall("?", startingDegreePosition);
             this.ballJumping(ball, startingDegreePosition);
             this.stage.addChild(ball);
         }
@@ -252,7 +261,7 @@ function NumbersCanvas() {
         var thirdDegree = Math.random() * 90; // inferior bowl side
         var velocity = this.minimumVelocityOfBall - Math.random() * 200;
 
-        var tween = createjs.Tween.get(ball, {loop: true}, true)
+        createjs.Tween.get(ball, {loop: true}, true)
                 .to({
                     guide: {
                         path: [this.calculateXCoordinateOnCircle(initialDegree), this.calculateYCoordinateOnCircle(initialDegree),
@@ -281,7 +290,7 @@ function NumbersCanvas() {
         var secondDegree = 45 + Math.random() * 90; // inferior bowl side
         var velocity = this.minimumVelocityOfBall - Math.random() * 200;
 
-        var tween = createjs.Tween.get(ball, {loop: true})
+        createjs.Tween.get(ball, {loop: true})
             .to({
                 x: this.calculateXCoordinateOnCircle(firstDegree), y: this.calculateYCoordinateOnCircle(firstDegree)
             }, velocity, createjs.Ease.getPowInOut(2))

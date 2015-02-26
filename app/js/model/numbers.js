@@ -71,9 +71,9 @@ Numbers.prototype.removeRemainingBall = function (index) {
 
 Numbers.prototype.reset = function () {
 
-    for (var i = 1; i <= this.TOTAL_NUMBERS; i++) {
-        this.hideNumber(i)
-    }
+//    for (var i = 1; i <= this.TOTAL_NUMBERS; i++) {
+//        this.hideNumber(i)
+//    }
 
     for (var j = 0; j < this.remainingBalls.length; j++) {
         this.remainingBalls[j] = false;

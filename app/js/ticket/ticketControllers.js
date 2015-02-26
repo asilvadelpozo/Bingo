@@ -34,19 +34,32 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
     };
 
     $scope.preloadAssets = function() {
+
+        // Create a single item to load.
+        var assetsPath = "./assets/";
+        var manifest = [
+            {"id":"fallingBall", "src": assetsPath + "audio/falling_ball.mp3"},
+            {"id":"loose", "src": assetsPath + "audio/loose.mp3"},
+            {"id":"setBall", "src": assetsPath +"audio/set_ball.mp3"},
+            {"id":"win", "src": assetsPath + "audio/win.mp3"},
+            {"id":"youLose", "src": assetsPath + "audio/You_Lose.mp3"},
+            {"id":"youWin", "src": assetsPath +"audio/You_Win.mp3"},
+            {"id":"images/numbers.png", "src": assetsPath + "images/numbers.png"}
+        ];
+
         var preload = new createjs.LoadQueue();
 
-        createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]); // need this so it doesn't default to Web Audio
+        createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]);
         preload.installPlugin(createjs.Sound);
 
         preload.on("fileload", $scope.handleFileComplete);
         preload.on("complete", $scope.handleComplete);
 
-        preload.loadManifest({src: "./assets/static/manifest.json", callback: "loadMediaGrid", type: "manifest"}, true, "./assets/");
+        preload.loadManifest(manifest);
     };
 
     $scope.handleComplete = function(event) {
-        createjs.Sound.play("youWin");
+
         $scope.ticketVisible = true;
         $scope.$apply();
     };
@@ -56,10 +69,6 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
         if(event.item.id === 'images/numbers.png') {
             $scope.numbersCanvas.initCanvas(event.result);
         }
-//        if(event.item.type === 'sound') {
-//            console.log("/assets/" + event.item.id);
-//            createjs.Sound.registerSound("../../assets/" + event.item.id, event.item.id);
-//        }
     };
 
     $scope.isNextNumberAvailable = function() {
@@ -106,6 +115,19 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
         $scope.winningClassesPrizeWon = totalPrize.getWinningClasses();
         $scope.stop();
         ngDialog.open({template: 'html/popupWinningInfo.html', className: 'ngdialog-theme-default', cache: false, scope: $scope});
+        $scope.playWinningsSound();
+    };
+
+    $scope.hasCustomerWon = function() {
+        return $scope.amountPrizeWon > 0;
+    };
+
+    $scope.playWinningsSound = function() {
+        if($scope.hasCustomerWon()) {
+            createjs.Sound.play("youWin");
+        } else {
+            createjs.Sound.play("youLose");
+        }
     };
 
     $scope.stop = function() {
@@ -122,6 +144,7 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
 
     $scope.reset = function() {
         $scope.numbersCanvas.cleanCanvas();
+        $scope.numbers.reset();
         $scope.ticketModel.resetBoards();
         $scope.numberIndex = 0;
         $scope.playButtonEnabled = false;
