@@ -29,6 +29,9 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
 
     $scope.ticketVisible = false;
 
+    $scope.preload;
+    $scope.progress = 0;
+
     $scope.isTicketVisible = function() {
         return $scope.ticketVisible;
     };
@@ -47,19 +50,19 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
             {"id":"images/numbers.png", "src": assetsPath + "images/numbers.png"}
         ];
 
-        var preload = new createjs.LoadQueue();
+        $scope.preload = new createjs.LoadQueue();
 
         createjs.Sound.registerPlugins([createjs.HTMLAudioPlugin]);
-        preload.installPlugin(createjs.Sound);
+        $scope.preload.installPlugin(createjs.Sound);
 
-        preload.on("fileload", $scope.handleFileComplete);
-        preload.on("complete", $scope.handleComplete);
+        $scope.preload.on("fileload", $scope.handleFileComplete);
+        $scope.preload.on("complete", $scope.handleComplete);
+        $scope.preload.on("progress", $scope.handleOverallProgress);
 
-        preload.loadManifest(manifest);
+        $scope.preload.loadManifest(manifest);
     };
 
     $scope.handleComplete = function(event) {
-
         $scope.ticketVisible = true;
         $scope.$apply();
     };
@@ -69,6 +72,19 @@ ticketControllers.controller('TicketCtrl', ['$scope', '$interval', 'ngDialog', '
         if(event.item.id === 'images/numbers.png') {
             $scope.numbersCanvas.initCanvas(event.result);
         }
+    };
+
+    $scope.handleOverallProgress = function(event) {
+
+        $scope.progress = (Math.floor($scope.preload.progress * 100)).toString() + '%';
+        if(!$scope.$$phase) {
+            $scope.$apply();
+        }
+        console.log("progress: " + $scope.progress);
+    };
+
+    $scope.getProgress = function() {
+       return $scope.progress;
     };
 
     $scope.isNextNumberAvailable = function() {

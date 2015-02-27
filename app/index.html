@@ -29,32 +29,15 @@
       ng-init="preloadAssets();">
     <div id="loadPanel"
          ng-show="!isTicketVisible()">
-         </div>
+        <div id="loadingText">LOADING</div>
+        <div id="progressBarContainer">
+            <div id="progressBarFill" ng-style="{width: getProgress()}"></div>
+        </div>
+    </div>
     <div id="content"
          ng-show="isTicketVisible()">
         <div id="info">
-        <canvas id="numbersCanvas" width="620" height="276">
-            alternate content
-        </canvas>
-            <!--<div id="numbers">-->
-                <!--<table>-->
-                    <!--<th colspan="10">Numbers</th>-->
-                    <!--<tr ng-repeat="row in numbers.getTable()">-->
-                        <!--<td ng-repeat="number in row track by $index"-->
-                            <!--ng-class="{'show': number.getShow()}">-->
-                            <!--{{number.getNumber()}}-->
-                        <!--</td>-->
-                    <!--</tr>-->
-                <!--</table>-->
-            <!--</div>-->
-            <!--<div id="nextNumber">-->
-                <!--<div class="ball">-->
-                    <!--<span class="ballNumber"-->
-                          <!--ng-class="{'hidden': !isNextNumberAvailable()}">-->
-                        <!--{{nextNumber}}-->
-                    <!--</span>-->
-                <!--</div>-->
-            <!--</div>-->
+            <canvas id="numbersCanvas" width="620" height="276" />
         </div>
         <div id="remainingBalls">
             <table>
