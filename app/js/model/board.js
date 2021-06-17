@@ -81,7 +81,7 @@ Board.prototype.reset = function () {
 Board.prototype.calculateBiggestPrize = function (prizes) {
     var biggestPrizeFound = false,
         index = prizes.length - 1,
-        result = new Prize(0, 0); //No amount and no winningclass
+        result = new Prize(0, 0); //No amount and no winning class
     while(!biggestPrizeFound && index >= 0) {
         if(this.boardHasWonPrize(prizes[index].positions)) {
             biggestPrizeFound = true;
